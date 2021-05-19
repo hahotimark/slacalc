@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slacalc/Calculate.dart';
+import 'package:slacalc/Slafunc.dart';
 import './Calculate.dart';
 
 void main() {
@@ -76,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
         else{
           resultFinal = ("Oh no! This is not date datas! Try again!");
+          AlertDialog();
         }
 
       // This method is rerun every time setState is called, for instance as done
@@ -84,123 +86,168 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
+
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
           children: <Widget>[
-            Text(
-              'You must write date to input YYYY-MM-DD H:M:S', style: TextStyle(color: Colors.grey,),
-            ),
-            Container(
-                padding: EdgeInsets.all(6.0),
-              width: 300,
-                child:
-            TextField(
-              controller: startDate,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Start Date',
-              ),
-            )
-            ),
-            Column(
-              children: [
-                Container(
-                    padding: EdgeInsets.all(6.0),
-                    width: 300,
-                    child:
-                    TextField(
-                      controller: endDate,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'End Date',
-                      ),
-                    )
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                SizedBox(   //Use of SizedBox
-                  height: 15,
-                ),
-                RaisedButton(
-                  color: Colors.brown,
-              onPressed: () {
-                setState(() {
-                  try {
-                    startText = startDate.text;
-                    endText = endDate.text;
-                  }
-                  catch(e){
-
-                    throw FormatException('Failed Format!');
-
-                  }
-
-                });
-              },
-                //  ), => print("Button Pressed"),
-                  child: new Text("Calculate time!"),
+            DrawerHeader(
+              child: Text('Menu'),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/posture.png"),
+                //color: Colors.brown,
                 )
-              ],
+              ),
             ),
-            Column(
-              children: [
-                SizedBox(   //Use of SizedBox
-                  height: 55,
-                ),
-              Container(
-                child: Text("Result: $resultFinal hours", style: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.bold), ),
-                  padding: EdgeInsets.all(25.0),
-                  height: 90,
-                  width: 340,
-                  decoration: BoxDecoration(
-                    color: Colors.brown.withOpacity(0.1),
-                  )
-              )
-          ]
+            ListTile(
+              title: Text('Calculator'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+              },
+            ),
+            ListTile(
+              title: Text('SLA+ Calculator'),
+              onTap: () {
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Slafunc()));
+                }
+              },
             ),
           ],
         ),
+      ),
+
+      body: Column(
+        children: [
+          SizedBox(   //Use of SizedBox
+            height: 65,
+          ),
+          Center(
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            child: Column(
+              // Column is also a layout widget. It takes a list of children and
+              // arranges them vertically. By default, it sizes itself to fit its
+              // children horizontally, and tries to be as tall as its parent.
+              //
+              // Invoke "debug painting" (press "p" in the console, choose the
+              // "Toggle Debug Paint" action from the Flutter Inspector in Android
+              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+              // to see the wireframe for each widget.
+              //
+              // Column has various properties to control how it sizes itself and
+              // how it positions its children. Here we use mainAxisAlignment to
+              // center the children vertically; the main axis here is the vertical
+              // axis because Columns are vertical (the cross axis would be
+              // horizontal).
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'You must write date to input YYYY-MM-DD H:M:S', style: TextStyle(color: Colors.grey,),
+                ),
+                Container(
+                    padding: EdgeInsets.all(6.0),
+                  width: 300,
+                    child:
+                TextField(
+                  controller: startDate,
+                  keyboardType: TextInputType.datetime,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Start Date',
+                  ),
+                )
+                ),
+                Column(
+                  children: [
+                    Container(
+                        padding: EdgeInsets.all(6.0),
+                        width: 300,
+                        child:
+                        TextField(
+                          controller: endDate,
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'End Date',
+                          ),
+                        )
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    SizedBox(   //Use of SizedBox
+                      height: 15,
+                    ),
+                    RaisedButton(
+                      color: Colors.brown,
+                  onPressed: () {
+                    setState(() {
+                      try {
+                        startText = startDate.text;
+                        endText = endDate.text;
+                      }
+                      catch(e){
+
+                        throw FormatException('Failed Format!');
+
+                      }
+
+                    });
+                  },
+                    //  ), => print("Button Pressed"),
+                      child: new Text("Calculate time!"),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    SizedBox(   //Use of SizedBox
+                      height: 55,
+                    ),
+                  Container(
+                    child: Text("Result: $resultFinal h/m/s", style: TextStyle(fontFamily: 'Raleway', fontWeight: FontWeight.bold), ),
+                      padding: EdgeInsets.all(25.0),
+                      height: 90,
+                      width: 340,
+                      decoration: BoxDecoration(
+                        color: Colors.brown.withOpacity(0.1),
+                      )
+                  )
+              ]
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
 }
 
-class ChildWidget extends StatelessWidget {
+/*
+
+class AlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: FlatButton(
-            child: Text("Generate error"),
-            onPressed: () => generateError()));
-  }
-
-  generateError() async {
-    throw "Test exception";
+    Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Hello!'),)
   }
 }
+
+ */
